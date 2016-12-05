@@ -1,0 +1,59 @@
+{% paginate products from products.current by 12 %}
+
+	{% if products != blank %}
+
+		<div class="row">
+			<ul class="product-grid">
+				{% for product in products %}
+					<li class="{{ product.css_class }} col-md-3 col-sm-6 col-xs-12">
+						<a href="{{ product.url }}" class="product-image-link info">
+							<img src="{{ product.image | product_image_url size: 'default' }}" class="img-responsive {% if product.image_count > 1 %}homepage-image-1{% endif %} {% if product.status == 'sold-out' %}wetheme-sold-out-overlay{% endif %}" alt="Image of {{ product.name | escape }}" />
+						</a>
+						<h2 class="wetheme-collection-product-name {% if product.status == 'sold-out' %}wetheme-sold-out-overlay{% endif %}">{{ product.name }}</h2>
+		  
+						{% case product.status %}
+						
+							{% when 'sold-out' %}
+								<h2 class="wetheme-collection-product-price">Sold Out</h2>
+							
+							{% when 'coming-soon' %}
+								<h2 class="wetheme-collection-product-price">Coming Soon</h2>
+							
+							{% when 'active' %}
+							
+								{% if product.on_sale %}
+								
+								{% if product.variable_pricing %}
+									<h2 class="wetheme-collection-product-price"><em>from</em> {{ product.default_price | money_with_sign }}<br /><span class="wetheme-collection-on-sale">On Sale</span></h2>
+								{% else %}
+									<h2 class="wetheme-collection-product-price">{{ product.default_price | money_with_sign }}<br /><span class="wetheme-collection-on-sale">On Sale</span></h2>
+								{% endif %}
+								
+									
+									
+								{% else %}
+							
+									{% if product.variable_pricing %}
+										<h2 class="wetheme-collection-product-price"><em>from</em> {{ product.default_price | money_with_sign }}</h2>
+									{% else %}
+										<h2 class="wetheme-collection-product-price">{{ product.default_price | money_with_sign }}</h2>
+									{% endif %}
+							
+								{% endif %}
+								
+						{% endcase %}
+						
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+
+{{ paginate | default_pagination }}
+
+	{% else %}
+
+		<p>No products found.</p>
+		
+	{% endif %}
+
+{% endpaginate %}

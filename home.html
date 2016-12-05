@@ -1,0 +1,195 @@
+{{ -- Start Home Settings -- }}
+
+{{ ### Slider ### }}
+
+{% assign: homepage-slider-image-one-show = 'yes' %}
+{% assign: homepage-slider-image-one = '' %}
+{% assign: homepage-slider-image-one-link = '' %}
+
+{% assign: homepage-slider-image-two-show = 'yes' %}
+{% assign: homepage-slider-image-two = '' %}
+{% assign: homepage-slider-image-two-link = '' %}
+
+{% assign: homepage-slider-image-three-show = 'yes' %}
+{% assign: homepage-slider-image-three = '' %}
+{% assign: homepage-slider-image-three-link = '' %}
+
+{% assign: homepage-slider-image-four-show = 'yes' %}
+{% assign: homepage-slider-image-four = '' %}
+{% assign: homepage-slider-image-four-link = '' %}
+
+{{ ### Instagram ### }}
+
+{% assign: show-instagram-block = '' %}
+{% assign: instagram-access-token = '' %}
+
+{{ -- End Home Settings -- }}
+
+{{ WARNING! }}
+{{ Do not edit below this line - unless you know what you are doing :) }}
+
+</section>
+
+{% assign instaimage = '{{image}}' %}
+{% assign instaurl = '{{link}}' %}
+
+<script type="text/javascript">
+    var userFeed = new Instafeed({
+        get: 'user',
+		userId: 'self',
+        accessToken: '{{ instagram-access-token }}',
+	        template: '<div class="col-md-3 col-sm-3 col-xs-6"><a href="{{instaurl}}" target="_blank"><img src="{{instaimage}}" class="img-responsive"/></a></div>',        
+		limit: 4,
+        resolution: 'standard_resolution'
+    });
+    userFeed.run();
+</script>
+	
+<div class="flexslider">
+
+	<ul class="slides">
+	
+		{% if homepage-slider-image-one-show == 'yes' %}
+		<li>
+			{% if homepage-slider-image-one-link != blank %}
+				<a href="{{ homepage-slider-image-one-link }}">
+			{% endif %}
+					<img src="{{ homepage-slider-image-one }}" />
+			{% if homepage-slider-image-one-link != blank %}
+				</a>
+			{% endif %}
+			</a>
+		</li>
+		{% endif %}
+		
+		{% if homepage-slider-image-two-show == 'yes' %}				
+		<li>
+			{% if homepage-slider-image-two-link != blank %}
+				<a href="{{ homepage-slider-image-two-link }}">
+			{% endif %}
+				<img src="{{ homepage-slider-image-two }}" />
+			{% if homepage-slider-image-two-link != blank %}
+				</a>
+			{% endif %}
+		</li>
+		{% endif %}				
+
+		{% if homepage-slider-image-three-show == 'yes' %}								
+		<li>
+			{% if homepage-slider-image-three-link != blank %}
+				<a href="{{ homepage-slider-image-three-link }}">
+			{% endif %}
+			<img src="{{ homepage-slider-image-three }}" />
+			{% if homepage-slider-image-three-link != blank %}
+				</a>
+			{% endif %}
+		</li>
+		{% endif %}				
+		
+		{% if homepage-slider-image-four-show == 'yes' %}				
+		<li>
+			{% if homepage-slider-image-four-link != blank %}
+				<a href="{{ homepage-slider-image-four-link }}">
+			{% endif %}
+			<img src="{{ homepage-slider-image-four }}" />
+			{% if homepage-slider-image-four-link != blank %}
+				</a>
+			{% endif %}
+		</li>
+		{% endif %}				
+		
+	</ul>
+	
+</div>
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-md-12">
+
+<h2 class="salo-header">Shop</h2>
+
+{% get products from products.all limit:9 order:theme.featured_order %}
+
+
+	{% if products != blank %}
+		<div class="row" id="product-grid-wrapper">
+			<ul class="product-grid">
+				{% for product in products %}
+					<li class="{{ product.css_class }} col-md-4 col-sm-4 col-xs-12">
+
+						<a href="{{ product.url }}" class="product-image-link info">
+							<img src="{{ product.image | product_image_url size: 'default' }}" class="img-responsive {% if product.image_count > 1 %}homepage-image-1{% endif %}" alt="Image of {{ product.name | escape }}" />
+							{% for image in product.images limit:1 offset:1 %}
+								<img src="{{ image | product_image_url size:'default' }}" class="img-responsive homepage-image-2" alt="Image of {{ product.name | escape }}" />
+							{% endfor %}
+						</a>
+						<h2 class="wetheme-collection-product-name">{{ product.name }}</h2>
+		
+						{% case product.status %}
+						
+							{% when 'sold-out' %}
+								<h2 class="wetheme-collection-product-price">Sold Out</h2>
+							
+							{% when 'coming-soon' %}
+								<h2 class="wetheme-collection-product-price">Coming Soon</h2>
+							
+							{% when 'active' %}
+							
+								{% if product.on_sale %}
+								
+								{% if product.variable_pricing %}
+									<h2 class="wetheme-collection-product-price"><em>from</em> {{ product.default_price | money_with_sign }}<br /><span class="wetheme-collection-on-sale">On Sale</span></h2>
+								{% else %}
+									<h2 class="wetheme-collection-product-price">{{ product.default_price | money_with_sign }}<br /><span class="wetheme-collection-on-sale">On Sale</span></h2>
+								{% endif %}
+								
+									
+									
+								{% else %}
+							
+									{% if product.variable_pricing %}
+										<h2 class="wetheme-collection-product-price"><em>from</em> {{ product.default_price | money_with_sign }}</h2>
+									{% else %}
+										<h2 class="wetheme-collection-product-price">{{ product.default_price | money_with_sign }}</h2>
+									{% endif %}
+							
+								{% endif %}
+								
+						{% endcase %}
+
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+
+	{% else %}
+		<p>No products found.</p>
+	{% endif %}
+	
+{% endget %}
+
+</div>
+
+</div>
+
+{% if show-instagram-block == 'yes' %}
+
+	
+<div class="row">
+
+	<div class="col-md-12">
+	
+		<h2 class="salo-header">Instagram</h2>
+	
+		<div class="loka-homepage-block loka-instagram-block">
+			
+			<div id="instafeed" class="row"></div>
+		</div>
+	
+	</div>
+
+</div>
+
+ {% endif %}

@@ -1,0 +1,354 @@
+{{ -- Start Layout Settings -- }}
+
+{{ ### Footer ### }}
+
+{% assign: show-mailchimp-footer-block = 'yes' %}
+{% assign: mailchimp-header = '' %}
+{% assign: mailchimp-url = '' %}
+
+{% assign: links-header = '' %}
+
+{% assign: social-media-header = '' %}
+
+{% assign: show-facebook-icon = 'yes' %}
+{% assign: facebook-url = '' %}
+
+{% assign: show-twitter-icon = 'yes' %}
+{% assign: twitter-url = '' %}
+
+{% assign: show-tumblr-icon = 'yes' %}
+{% assign: tumblr-url = '' %}
+
+{% assign: show-pinterest-icon = 'yes' %}
+{% assign: pinterest-url = '' %}
+
+{% assign: show-instagram-icon = 'yes' %}
+{% assign: instagram-url = '' %}
+
+{{ -- End Layout Settings -- }}
+
+
+<!DOCTYPE html>
+  <head>
+  
+	    <title>{{ store.name }} &mdash; {{ page.name }}</title>
+
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+	    <meta name="description" content="{{ page.meta_description }}">
+	    <meta name="keywords" content="{{ page.meta_keywords }}">
+	    
+	    {% if page.permalink == 'product' %}
+	    
+	    <meta property="og:title" content="{{ product.name | escape }}" />
+	    <meta property="og:description" content="{{ product.description | truncatewords: 50 }}" />
+	    <meta property="og:url" content="{{ store.url }}{{ product.url }}" />
+	    <meta property="og:site_name" content="{{ store.name }}" />
+	    <meta property="og:price:amount" content="{{ product.default_price }}" />
+		<meta property="og:image" content="{{ product.image | product_image_url | escape }}">
+		
+		{% endif %}
+
+		<!-- Latest compiled and minified CSS -->
+		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">		
+		<link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css" rel="stylesheet">				
+		<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet" >		
+		
+	    <link href="{{ theme | theme_css_url }}" media="screen" rel="stylesheet" type="text/css">
+	    
+	    <!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Work+Sans:400,700' rel='stylesheet' type='text/css'>
+	    
+		<!-- JS -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"></script>	
+		
+		<script src="//wetheme.s3.amazonaws.com/salo/custom.js"></script>
+		
+		<script type="text/javascript" charset="utf-8">
+			$(window).load(function() {
+				$('.flexslider').flexslider({
+					animation: "slide",
+					slideshowSpeed: 3000,
+					controlNav: false
+				});
+			});
+			
+			jQuery(document).ready(function($){
+				var isLateralNavAnimating = false;
+				
+				//open/close lateral navigation
+				$('.cd-nav-trigger').on('click', function(event){
+					event.preventDefault();
+					//stop if nav animation is running 
+					if( !isLateralNavAnimating ) {
+						if($(this).parents('.csstransitions').length > 0 ) isLateralNavAnimating = true; 
+						
+						$('body').toggleClass('navigation-is-open');
+						$('.cd-navigation-wrapper').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
+							//animation is over
+							isLateralNavAnimating = false;
+						});
+					}
+				});
+			});
+			
+			$(function() {
+			    $('.wetheme-head-match-height').matchHeight();
+			});
+			
+		</script>
+
+		{{ head_content }}
+		
+	</head>
+
+<body id="{{ page.permalink }}" class="{{ page.category }}">
+	
+<main>
+  
+<header>
+
+	<div class="container">
+		<div class="row">
+			
+			<div class="wetheme-head-match-height col-md-12 col-sm-12 col-xs-12" id="oulu-logo-wrapper">
+			
+				<div class="oulu-header-spacing">
+				
+					<a href="/" title="{{ store.name | escape }}">
+					    {% if theme.image != blank %}
+					    <img src="{{ theme.image.url }}" alt="{{ store.name | escape }}" class="logo-image img-responsive" />
+					    {% else %}
+					    <h2>{{ store.name }}</h2>
+					    {% endif %}
+					</a>
+			
+				</div>
+			
+			</div>
+	      	
+		</div><!-- .row -->	
+	</div><!-- .container -->
+</header>
+    
+
+
+    
+      <section class="content container">
+      	<div class="row">
+      		<div class="col-md-12">
+		        <h1 class="h1-page-name">{{ page.name }}</h1>
+		    </div>
+        </div>
+
+        {% if errors != blank %}
+        <div class="row">
+        	<div class="col-lg-12">
+		        <div class="alert alert-danger">
+		          {% for error in errors %}
+		          	{{ error }}
+		          {% endfor %}
+		        </div>
+	        </div>
+        </div>
+        {% endif %}
+
+        {% if page.category == 'custom' %}
+          {{ page_content | paragraphs }}
+        {% else %}
+          {{ page_content }}
+        {% endif %}
+        
+        
+            <footer class="row">
+        
+                    <div class="col-md-4 col-sm-4">
+        			        
+        	        {% if show-mailchimp-footer-block == 'yes' %} 
+        	            
+        	        	    <h2>
+        	        	    {% if mailchimp-header != empty %}
+        	        	    	{{ mailchimp-header }}
+        	        	    {% else %}	
+        	        	    	Join Our Mailing List
+        	        	    {% endif %}
+        	        	    </h2>
+        	        	    <div id="mc_embed_signup">
+        	        	    	<form action="{{ mailchimp-url }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+        	        	    	<input type="email" value="" name="EMAIL" class="form-control" id="mce-EMAIL" placeholder="email address" required>
+        	        	    	<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="btn btn-success" style="margin-bottom: 40px;">
+        	        	    	</form>
+        	        	    </div>
+        	            	            
+        	        {% endif %}	
+        	        
+                    </div>	        
+        		    
+        		    <div class="col-md-4 col-sm-4 wetheme-footer-links">
+        		    
+        		    	<h2>
+        		    	{% if links-header != empty %}
+        		    		{{ links-header }}
+        		    	{% else %}	
+        			    	Links
+        			    {% endif %}
+        		    	</h2>
+        		    	
+        		    	<ul>
+        		    	
+        		    		<li>{{ pages.home | link_to }}</li>    						
+        		    		{% for page in pages.all %}
+        		    			<li>{{ page | link_to }}</li>
+        		    		{% endfor %}  	
+        		    		<li><a href="/contact">Contact Us</a></li>    				    				    				    		
+        		    	
+        		    	</ul>
+        		    
+        		    </div>
+        		    
+        		    
+        		    <div class="col-md-4 col-sm-4" id="sm-icons">
+        		    
+        		    
+        		    
+        		    
+        		    
+        		    	<h2>
+        		    	{% if social-media-header != empty %}
+        		    		{{ social-media-header }}
+        		    	{% else %}	
+        		    		Social Media
+        		    	{% endif %}
+        		    	</h2>
+        		    
+        			    <ul>
+        			    
+        			    {% if show-facebook-icon == 'yes' %}	
+        				    <li>
+        				    <a href="{{ facebook-url }}">
+        				    	<img src="http://wetheme.s3.amazonaws.com/smi/facebook.png" />
+        				    </a>
+        				    </li>
+        				{% endif %}				    
+        				
+        			    {% if show-twitter-icon == 'yes' %}
+        				    <li>
+        				    <a href="{{ twitter-url }}">
+        				    	<img src="http://wetheme.s3.amazonaws.com/smi/twitter.png" />
+        				    </a>
+        				    </li>   	
+        				{% endif %}			
+        				
+        			    {% if show-tumblr-icon == 'yes' %}						
+        				    <li>
+        				    <a href="{{ tumblr-url }}">
+        				    	<img src="http://wetheme.s3.amazonaws.com/smi/tumblr.png" />
+        				    </a>
+        				    </li>  	
+        				{% endif %}			
+        
+        			    {% if show-pinterest-icon == 'yes' %}					    
+        				    <li>
+        				    <a href="{{ pinterest-url }}">
+        				    	<img src="http://wetheme.s3.amazonaws.com/smi/pinterest.png" />
+        				    </a>
+        				    </li>
+        				{% endif %}			
+        
+        			    {% if show-instagram-icon == 'yes' %}	
+        				    <li>
+        				    <a href="{{ instagram-url }}">
+        				    	<img src="http://wetheme.s3.amazonaws.com/smi/instagram.png" />
+        				    </a>
+        				    </li>
+        				{% endif %}			
+        			    
+        			    </ul>
+        		    
+        		    </div>
+        
+        <div class="wetheme" style="width: 100%; text-align: center;">
+        	<a href="http://www.wetheme.com" title="Design by WeTheme">
+        		<img src="http://wetheme.s3.amazonaws.com/wetheme-logo.png" alt="Designed by WeTheme" />
+        	</a>
+        </div>
+        
+            </footer>
+        
+        
+      </section>
+      
+
+
+
+</div>
+
+</main>
+
+	<a href="#cd-nav" class="cd-nav-trigger">Menu 
+		<span class="cd-nav-icon"></span>
+
+		<svg x="0px" y="0px" width="54px" height="54px" viewBox="0 0 54 54">
+			<circle fill="transparent" stroke="#656e79" stroke-width="1" cx="27" cy="27" r="25" stroke-dasharray="157 157" stroke-dashoffset="157"></circle>
+		</svg>
+	</a>
+
+	<div id="cd-nav" class="cd-nav">
+		<div class="cd-navigation-wrapper">
+			<div class="cd-half-block">
+				
+				<h2>Your Bag</h2>
+
+				<nav>
+					<ul class="cd-primary-nav" id="jetset-cart-drawer">
+						<li class="jetset-cart-drawer--item-count">
+						<h4><span class="cart-item-count">{{ cart.item_count }}</span></h4>
+						<span class="cart-item-count-text">items in your cart</span>
+						</li>
+						
+						<li class="jetset-cart-drawer--cart-total">
+						<h4><span class="cart-item-price">{{ cart.total | money_with_sign }}</span></h4>						
+						<span class="cart-item-price-text">total cart value</span>
+						</li>
+						
+						<li class="jetset-cart-drawer--checkout-button">
+						<a href="/cart" class="btn btn-success">Review</a>
+						</li>
+						
+					</ul>
+				</nav>
+			</div><!-- .cd-half-block -->
+			
+			<div class="cd-half-block">
+			
+			<h2>Categories</h2>
+			
+			<ul class="cd-primary-nav">
+			{% for category in categories.active %}
+				<li>{{ category | link_to }}</li>
+			{% endfor %}
+			</ul>
+
+			<h2 style="margin-top: 3.4em;">Navigation</h2>
+			
+					<ul class="cd-primary-nav">
+						<li>{{ pages.home | link_to }}</li>    						
+						{% for page in pages.all %}
+							<li>{{ page | link_to }}</li>
+						{% endfor %}    							
+						<li><a href="/contact">Contact Us</a></li>
+					</ul>												
+
+					
+			</div> <!-- .cd-half-block -->
+		</div> <!-- .cd-navigation-wrapper -->
+	</div> <!-- .cd-nav -->
+    
+  </body>
+</html>

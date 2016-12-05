@@ -1,0 +1,151 @@
+<!-- Facebook Like Script -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script type="text/javascript" charset="utf-8">
+	$(function () {
+	    $('#main-prod-image').zoomie();
+	  });
+</script>
+
+<div class="row">
+
+<div id="product_images" class="col-md-6">
+
+	<div class="featured-image-div hidden-xs hidden-sm">
+		<img id="main-prod-image" src="{{ product.image | product_image_url }}" data-full-src="{{ product.image | product_image_url }}" class="img-responsive" />
+	</div>
+	
+	<ul class="row">
+		{% for image in product.images %}
+		<li class="prod-thumbnail col-md-3 hidden-xs hidden-sm">
+			<a href="{{ image | product_image_url }}" class="image-swap">
+				<img src="{{ image | product_image_url | constrain: '970', '2000' }}" alt="Image of {{ product.name | escape }}" class="img-responsive" />
+			</a>
+		</li>
+		{% endfor %}
+		
+		{% for image in product.images %}
+		<li class="prod-thumbnail col-md-3 visible-xs visible-sm">
+			<img src="{{ image | product_image_url | constrain: '970', '2000' }}" alt="Image of {{ product.name | escape }}" class="img-responsive" />
+		</li>
+		{% endfor %}
+
+	</ul>
+
+</div>
+
+<section class="prod-descrip col-md-6">
+	<aside>
+		
+			
+			<div class="wetheme-product-des">
+			
+			<h2 id="product_name">{{ product.name }}</h2>
+			
+						{% for artist in product.artists %}
+						  {% if forloop.first %}
+						    <h5 class="wetheme-artist-name">{{ artist.name }}</h5>
+						    {% if forloop.length > 2 %}, {% endif %}
+						  {% elsif forloop.last %}
+						    <h5 class="wetheme-artist-name">&amp; {{ artist.name }}</h5>
+						  {% else %}
+						    <h5 class="wetheme-artist-name">{{ artist.name }}</h5>,
+						  {% endif %}
+						{% endfor %}
+			
+			
+			<h2 class="wetheme-product-price">{{ product.default_price | money_with_sign }}</h2>
+			
+			{% if product.description != blank %}
+				<div class="wetheme-product-description">
+					{{ product.description | paragraphs }}
+				</div>
+			{% endif %}
+
+			
+<div class="wetheme-product-options">
+    {% case product.status %}
+
+      {% when 'sold-out' %}
+        <span class="label label-danger">Sold Out</span>
+
+      {% when 'coming-soon' %}
+        <span class="label label-success">Coming Soon</span>
+
+      {% when 'active' %}
+
+        
+                 <form method="post" action="/cart">
+                   {% if product.has_default_option %}
+                   {{ product.option | hidden_option_input }}
+                   {% else %}
+                   <div>
+                   {{ product.options_in_stock | options_select }}
+                   </div>
+                   {% endif %}
+                   
+        
+                  <button type="submit" class="btn btn-default add-to-cart">Add to Cart</button>
+                </form>
+	   
+    {% endcase %}
+    </div>
+    
+    </div>
+    
+<div class="social-sharing" data-permalink="{{ store.url }}{{ product.url }}">
+
+    <!-- https://developers.facebook.com/docs/plugins/share-button/ -->
+    <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ store.url }}{{ product.url }}" class="share-facebook">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+
+    <!-- https://dev.twitter.com/docs/intents -->
+    <a target="_blank" href="http://twitter.com/share?url={{ store.url }}{{ product.url }}" class="share-twitter">
+		<span class="fa-stack fa-lg">
+		  <i class="fa fa-circle fa-stack-2x"></i>
+		  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+    </a>
+
+    <!-- https://developers.google.com/+/web/share/ -->
+    <a target="_blank" href="http://plus.google.com/share?url={{ store.url }}{{ product.url }}" class="share-google">
+		<span class="fa-stack fa-lg">
+		  <i class="fa fa-circle fa-stack-2x"></i>
+		  <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+    </a>
+
+    <!-- https://developer.linkedin.com/plugins/share -->
+    <a target="_blank" href="http://www.linkedin.com/shareArticle?mini=true&url={{ store.url }}{{ product.url }}&title={{ product.name }}" class="share-linkedin">
+		<span class="fa-stack fa-lg">
+		  <i class="fa fa-circle fa-stack-2x"></i>
+		  <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+		</span>
+    </a>
+
+    <!-- http://blogs.skype.com/2015/11/04/introducing-share-button-effortless-sharing-that-sparks-richer-conversations/ -->
+    <a target="_blank" href="https://web.skype.com/share?url={{ store.url }}{{ product.url }}&lang=en-us" class="share-skype">
+		<span class="fa-stack fa-lg">
+		  <i class="fa fa-circle fa-stack-2x"></i>
+		  <i class="fa fa-skype fa-stack-1x fa-inverse"></i>
+		</span>
+    </a>
+
+  </div>
+    
+  </aside>
+
+</section>
+
+</div>

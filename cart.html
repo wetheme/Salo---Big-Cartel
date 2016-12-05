@@ -1,0 +1,91 @@
+{% if cart.items != blank %}
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+<form id="cart-form" method="post" action="/cart" accept-charset="utf8">
+    <input type="hidden" name="utf8" value='✓'>
+  <ul id="cart_contents" class="clearfix">
+    {% for item in cart.items %}
+    <li id="item_{{ item.id }}" class="clearfix">
+      <div class="item_wrap row" style="padding: 0;">
+        <div class="col-md-3 col-sm-4 col-xs-4"><a href="{{ item.product.url }}" title="View {{ item.product.name | escape }}"><img class="img-responsive" src="{{ item.product.image | product_image_url size:"medium" }}" /><span class="stilt"></span></a></div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+	        <div class="item_info">
+	          <h3 class="wetheme-cart-product-name">{{ item.product.name }}</h3>
+	          <p>{{ item.option.name }}</p>
+	        </div>
+			<div class="row" style="padding-left: 0; padding-right: 0;">
+	        <div class="item_price col-md-6 col-sm-6 col-xs-12"><p>{{ item.unit_price | money_with_sign }}<br /><span class="cart-subtext">each</span></p></div>
+	        <div class="item_qty col-md-6 col-sm-6 col-xs-12">{{ item | item_quantity_input }}</div>
+	        </div>
+		</div>
+      </div>
+    </li>{% endfor %}
+  </ul>
+  </div>
+
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  {% if cart.discount.enabled %}
+  <div id="cart_discount" class="clearfix">
+  	<div class="eight columns alpha">
+	    <span class="small-total" style="margin-bottom: 10px; margin-top: 40px; display: inline-block;">Discount Code (optional)</span>
+    </div>    
+    <div class="eight columns omega">
+    <div id="discount_entry">
+	    {% if cart.discount.pending %}
+	    	{{ cart.discount | discount_code_input }}
+	    {% else %}
+	    	<div id="discount_total"{% if cart.discount.pending %} style="display:none"{% endif %}>-{{ cart.discount.amount | money_with_sign }} ({{ cart.discount.percent }}% off)</div>
+	    {% endif %}
+    </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if cart.shipping.enabled %}
+  <div id="cart_shipping" class="clearfix">
+	<div class="eight columns alpha">
+    <span class="small-total" style="margin-bottom: 10px; margin-top: 40px; display: inline-block;">Shipping</span>
+    </div>
+	<div class="eight columns omega">
+    {% if cart.shipping.strict %}
+    <div id="shipping_entry">{{ store.country | country_select }}</div>
+    {% endif %}
+    <div id="shipping_total"{% if cart.shipping.pending %} style="display:none"{% endif %}>{{ cart.shipping.amount | money_with_sign }}</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div id="cart_update">
+    <button id="btn_update" class="btn btn-default" name="update" type="submit" title="Update your cart total"><span>Update Total</span></button>
+  </div>
+
+  <noscript>
+    <style type="text/css">
+      #cart_update { display: block; }
+    </style>
+  </noscript>
+
+  <div class="cart_total" class="clearfix">
+  <span class="small-total">Total</span>
+    {% if cart.shipping.enabled %}
+    <h3 id="cart_price">{{ cart.total | money_with_sign }}</h3>
+    {% else %}
+    <h3 id="cart_price">{{ cart.price | money_with_sign }}</h3>
+    <p>+ applicable shipping</p>
+    {% endif %}
+    <button id="btn_checkout" class="btn btn-success" name="checkout" type="submit" title="Checkout"><span>Checkout</span></button>
+  </div>
+  </div>
+
+</form>
+</div><!-- .row -->
+
+{% endif %}
+
+<div id="cart_empty"{% if cart.items != blank %} style="display:none"{% endif %}>
+  <h2>You don&#8217;t have any items in your cart.</h2>
+  <p>Sounds like a good time to <a href="/">start shopping</a>.</p>
+</div>
