@@ -38,17 +38,17 @@
         get: 'user',
 		userId: 'self',
         accessToken: '{{ instagram-access-token }}',
-	        template: '<div class="col-md-3 col-sm-3 col-xs-6"><a href="{{instaurl}}" target="_blank"><img src="{{instaimage}}" class="img-responsive"/></a></div>',        
+	        template: '<div class="col-md-3 col-sm-3 col-xs-6"><a href="{{instaurl}}" target="_blank"><img src="{{instaimage}}" class="img-responsive"/></a></div>',
 		limit: 4,
         resolution: 'standard_resolution'
     });
     userFeed.run();
 </script>
-	
+
 <div class="flexslider">
 
 	<ul class="slides">
-	
+
 		{% if homepage-slider-image-one-show == 'yes' %}
 		<li>
 			{% if homepage-slider-image-one-link != blank %}
@@ -61,8 +61,8 @@
 			</a>
 		</li>
 		{% endif %}
-		
-		{% if homepage-slider-image-two-show == 'yes' %}				
+
+		{% if homepage-slider-image-two-show == 'yes' %}
 		<li>
 			{% if homepage-slider-image-two-link != blank %}
 				<a href="{{ homepage-slider-image-two-link }}">
@@ -72,9 +72,9 @@
 				</a>
 			{% endif %}
 		</li>
-		{% endif %}				
+		{% endif %}
 
-		{% if homepage-slider-image-three-show == 'yes' %}								
+		{% if homepage-slider-image-three-show == 'yes' %}
 		<li>
 			{% if homepage-slider-image-three-link != blank %}
 				<a href="{{ homepage-slider-image-three-link }}">
@@ -84,9 +84,9 @@
 				</a>
 			{% endif %}
 		</li>
-		{% endif %}				
-		
-		{% if homepage-slider-image-four-show == 'yes' %}				
+		{% endif %}
+
+		{% if homepage-slider-image-four-show == 'yes' %}
 		<li>
 			{% if homepage-slider-image-four-link != blank %}
 				<a href="{{ homepage-slider-image-four-link }}">
@@ -96,10 +96,10 @@
 				</a>
 			{% endif %}
 		</li>
-		{% endif %}				
-		
+		{% endif %}
+
 	</ul>
-	
+
 </div>
 
 <div class="container">
@@ -126,37 +126,37 @@
 							{% endfor %}
 						</a>
 						<h2 class="wetheme-collection-product-name">{{ product.name }}</h2>
-		
+
 						{% case product.status %}
-						
+
 							{% when 'sold-out' %}
 								<h2 class="wetheme-collection-product-price">Sold Out</h2>
-							
+
 							{% when 'coming-soon' %}
 								<h2 class="wetheme-collection-product-price">Coming Soon</h2>
-							
+
 							{% when 'active' %}
-							
+
 								{% if product.on_sale %}
-								
+
 								{% if product.variable_pricing %}
 									<h2 class="wetheme-collection-product-price"><em>from</em> {{ product.default_price | money_with_sign }}<br /><span class="wetheme-collection-on-sale">On Sale</span></h2>
 								{% else %}
 									<h2 class="wetheme-collection-product-price">{{ product.default_price | money_with_sign }}<br /><span class="wetheme-collection-on-sale">On Sale</span></h2>
 								{% endif %}
-								
-									
-									
+
+
+
 								{% else %}
-							
+
 									{% if product.variable_pricing %}
 										<h2 class="wetheme-collection-product-price"><em>from</em> {{ product.default_price | money_with_sign }}</h2>
 									{% else %}
 										<h2 class="wetheme-collection-product-price">{{ product.default_price | money_with_sign }}</h2>
 									{% endif %}
-							
+
 								{% endif %}
-								
+
 						{% endcase %}
 
 					</li>
@@ -167,7 +167,7 @@
 	{% else %}
 		<p>No products found.</p>
 	{% endif %}
-	
+
 {% endget %}
 
 </div>
@@ -176,18 +176,18 @@
 
 {% if show-instagram-block == 'yes' %}
 
-	
+
 <div class="row">
 
 	<div class="col-md-12">
-	
+
 		<h2 class="salo-header">Instagram</h2>
-	
+
 		<div class="loka-homepage-block loka-instagram-block">
-			
+
 			<div id="instafeed" class="row"></div>
 		</div>
-	
+
 	</div>
 
 </div>
